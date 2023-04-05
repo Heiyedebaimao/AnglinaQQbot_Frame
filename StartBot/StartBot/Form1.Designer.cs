@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QQbot_Form));
             this.F_Start = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -37,7 +38,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.F_Update = new System.Windows.Forms.Button();
             this.F_Setup = new System.Windows.Forms.Button();
             this.F_administrators = new System.Windows.Forms.TextBox();
             this.F_qqList = new System.Windows.Forms.TextBox();
@@ -50,7 +50,7 @@
             // 
             // F_Start
             // 
-            this.F_Start.Location = new System.Drawing.Point(535, 121);
+            this.F_Start.Location = new System.Drawing.Point(455, 54);
             this.F_Start.Name = "F_Start";
             this.F_Start.Size = new System.Drawing.Size(209, 68);
             this.F_Start.TabIndex = 0;
@@ -130,16 +130,6 @@
             this.label8.TabIndex = 8;
             this.label8.Text = "登录协议";
             // 
-            // F_Update
-            // 
-            this.F_Update.Location = new System.Drawing.Point(62, 396);
-            this.F_Update.Name = "F_Update";
-            this.F_Update.Size = new System.Drawing.Size(209, 68);
-            this.F_Update.TabIndex = 9;
-            this.F_Update.Text = "刷新";
-            this.F_Update.UseVisualStyleBackColor = true;
-            this.F_Update.Click += new System.EventHandler(this.F_Update_Click);
-            // 
             // F_Setup
             // 
             this.F_Setup.Location = new System.Drawing.Point(62, 486);
@@ -213,7 +203,6 @@
             this.Controls.Add(this.F_qqList);
             this.Controls.Add(this.F_administrators);
             this.Controls.Add(this.F_Setup);
-            this.Controls.Add(this.F_Update);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -223,6 +212,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.F_Start);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "QQbot_Form";
             this.Text = "AngelinaHelper";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -242,7 +232,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button F_Update;
         private System.Windows.Forms.Button F_Setup;
         private System.Windows.Forms.TextBox F_administrators;
         private System.Windows.Forms.TextBox F_qqList;

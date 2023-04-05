@@ -31,18 +31,9 @@ namespace StartBot
         /// <param name="e"></param>
         private void Start_Click(object sender, EventArgs e)
         {
-            //Process p = new Process();
-            //p.StartInfo.FileName = "cmd";
-            //p.StartInfo.Arguments = "/k cd d: \"D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\start.bat\"";
-            //p.StartInfo.UseShellExecute = false;//运行时隐藏dos窗口
-            //p.StartInfo.CreateNoWindow = false;//运行时隐藏dos窗口
-            //p.Start();
-            //p.WaitForExit();
-
             try
-
             {
-                string targetDir = string.Format(@"D:\1TOOL\QQbot\AngelinaBot-Windows10\AngelinaBot-Windows10");//@"D:\BizMap\"
+                string targetDir = string.Format(@"D:\1TOOL\QQbot\AngelinaBot-Windows10\AngelinaBot-Windows10");
                 Process proc = new Process();
                 proc.StartInfo.WorkingDirectory = targetDir;
                 proc.StartInfo.FileName = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\start.bat";
@@ -50,49 +41,13 @@ namespace StartBot
                 proc.StartInfo.CreateNoWindow = false;
                 proc.StartInfo.WindowStyle = ProcessWindowStyle.Normal;//这里设置DOS窗口不显示，经实践可行
                 proc.Start();
-                //proc.WaitForExit();
+                proc.WaitForExit();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Exception Occurred :{0},{1}", ex.Message, ex.StackTrace.ToString());
             }
-            //using (Process proc = new Process())
-            //{
-            //    string command = @"D:\1TOOL\QQbot\AngelinaBot-Windows10\AngelinaBot-Windows10\start.bat";
-            //    proc.StartInfo.FileName = command;
-            //    proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(command);
 
-            //    //run as admin
-            //    proc.StartInfo.Verb = "runas";
-
-            //    proc.Start();
-            //    while (!proc.HasExited)
-            //    {
-            //        proc.WaitForExit(1000);
-            //    }
-            //}
-
-        }
-
-        public void writeBATFile(string fileContent)
-        {
-            string filePath = "D:\\test\\calljar.bat";
-            if (!File.Exists(filePath))
-            {
-                FileStream fs1 = new FileStream(filePath, FileMode.Create, FileAccess.Write);//创建写入文件
-                StreamWriter sw = new StreamWriter(fs1);
-                sw.WriteLine(fileContent);//开始写入值
-                sw.Close();
-                fs1.Close();
-            }
-            else
-            {
-                FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Write);
-                StreamWriter sr = new StreamWriter(fs);
-                sr.WriteLine(fileContent);//开始写入值
-                sr.Close();
-                fs.Close();
-            }
         }
 
         /// <summary>
@@ -120,29 +75,8 @@ namespace StartBot
             string[] type = { "IPAD", "ANDROID_PAD", "ANDROID_PHONE", "MACOS" };
             F_typeList.Items.AddRange(type);
             F_typeList.SelectedIndex = 0;
-        }
 
-        /// <summary>
-        /// 读取数据
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void F_Update_Click(object sender, EventArgs e)
-        {
-            string filePath = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\application.yml";
-            TextReader reader = File.OpenText(filePath);
-            var yaml = new YamlStream();
-            yaml.Load(reader);
-            var mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
-
-            F_administrators.Text = mapping["userConfig"]["administrators"].ToString();
-            F_qqList.Text= mapping["userConfig"]["qqList"].ToString();
-            F_pwList.Text = mapping["userConfig"]["pwList"].ToString();
-
-            F_APP_ID.Text = mapping["baiduConfig"]["APP_ID"].ToString();
-            F_API_KEY.Text = mapping["baiduConfig"]["API_KEY"].ToString();
-            F_SECRET_KEY.Text = mapping["baiduConfig"]["SECRET_KEY"].ToString();
-
+            Updateyml();
         }
 
         /// <summary>
@@ -152,27 +86,85 @@ namespace StartBot
         /// <param name="e"></param>
         private void F_Setup_Click(object sender, EventArgs e)
         {
-            //string filePath = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\application.yml";
-            //TextReader writer = File.OpenText(filePath);
-            //var yaml = new YamlStream();
-            //yaml.Save(writer);
+            String filePath = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\application.yml";
+            Ymlhelper yml = new Ymlhelper(filePath);
+            yml.modify("administrators", F_administrators.Text);
+            yml.modify("qqList", F_qqList.Text);
+            yml.modify("pwList", F_pwList.Text);
+            yml.modify("APP_ID", F_APP_ID.Text);
+            yml.modify("API_KEY", F_API_KEY.Text);
+            yml.modify("SECRET_KEY", F_SECRET_KEY.Text);
 
-            //var mapping1 = (YamlMappingNode)yaml.Documents[0].RootNode;
-
-            //yaml.Save(mapping);
-
-
-            //mapping["userConfig"]["administrators"] = F_administrators.Text.Trim();
-
-
-
-            //F_qqList.Text = mapping["userConfig"]["qqList"].ToString();
-            //F_pwList.Text = mapping["userConfig"]["pwList"].ToString();
-
-            //F_APP_ID.Text = mapping["baiduConfig"]["APP_ID"].ToString();
-            //F_API_KEY.Text = mapping["baiduConfig"]["API_KEY"].ToString();
-            //F_SECRET_KEY.Text = mapping["baiduConfig"]["SECRET_KEY"].ToString();
-
+            yml.modify("typeList", F_typeList.Text);
+            yml.save();
+            Updateyml();
         }
+
+        /// <summary>
+        /// 读取yml文件设置参数
+        /// </summary>
+        private void Updateyml()
+        {
+            String filePath = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\application.yml";
+            //String filePath = Directory.GetCurrentDirectory() + @"\application.yml";
+            Ymlhelper yml = new Ymlhelper(filePath);
+            F_administrators.Text = yml.read("administrators");
+            F_qqList.Text = yml.read("qqList");
+            F_pwList.Text = yml.read("pwList");
+
+            F_APP_ID.Text = yml.read("APP_ID");
+            F_API_KEY.Text = yml.read("API_KEY");
+            F_SECRET_KEY.Text = yml.read("SECRET_KEY");
+        }
+
+        private void test()
+        {
+            using (Process process = new System.Diagnostics.Process())
+            {
+                process.StartInfo.FileName = "ping";
+                process.StartInfo.Arguments = "www.ymind.net -t";
+                // 必须禁用操作系统外壳程序  
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardOutput = true;
+
+                process.Start();
+
+                // 异步获取命令行内容  
+                process.BeginOutputReadLine();
+
+                // 为异步获取订阅事件  
+                process.OutputDataReceived += new DataReceivedEventHandler(process_OutputDataReceived);
+            }             
+        }
+
+
+        private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            // 这里仅做输出的示例，实际上您可以根据情况取消获取命令行的内容  
+            // 参考：process.CancelOutputRead()  
+
+            if (String.IsNullOrEmpty(e.Data) == false)
+                this.AppendText(e.Data + "\r\n");
+        }
+
+        #region 解决多线程下控件访问的问题  
+
+        public delegate void AppendTextCallback(string text);
+
+        public void AppendText(string text)
+        {
+            //if (this.textBox1.InvokeRequired)
+            //{
+            //    AppendTextCallback d = new AppendTextCallback(AppendText);
+            //    this.textBox1.Invoke(d, text);
+            //}
+            //else
+            //{
+            //    this.textBox1.AppendText(text);
+            //}
+        }
+
+        #endregion
     }
 }
