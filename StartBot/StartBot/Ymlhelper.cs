@@ -250,7 +250,7 @@ namespace StartBot
         }
 
         /// <summary>
-        /// 移除多余字符
+        /// 移除字符
         /// </summary>
         /// <param name="str_in">原字符串</param>
         /// <param name="sign">需要移除的字符</param>

@@ -12,3 +12,5 @@ D:\1TOOL\QQbot\Framework\StartBot\StartBot\obj\Debug\StartBot.csproj.CoreCompile
 D:\1TOOL\QQbot\Framework\StartBot\StartBot\obj\Debug\StartBot.csproj.CopyComplete
 D:\1TOOL\QQbot\Framework\StartBot\StartBot\obj\Debug\StartBot.exe
 D:\1TOOL\QQbot\Framework\StartBot\StartBot\obj\Debug\StartBot.pdb
+D:\1TOOL\QQbot\Framework\StartBot\StartBot\bin\Debug\Newtonsoft.Json.dll
+D:\1TOOL\QQbot\Framework\StartBot\StartBot\bin\Debug\Newtonsoft.Json.xml
