@@ -57,6 +57,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.F_mm_cansee = new System.Windows.Forms.CheckBox();
+            this.F_tell_cmd = new System.Windows.Forms.TextBox();
+            this.F_write_cmd = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -66,7 +68,7 @@
             // 
             this.F_Start.Location = new System.Drawing.Point(735, 150);
             this.F_Start.Name = "F_Start";
-            this.F_Start.Size = new System.Drawing.Size(121, 68);
+            this.F_Start.Size = new System.Drawing.Size(86, 68);
             this.F_Start.TabIndex = 0;
             this.F_Start.Text = "启动";
             this.F_Start.UseVisualStyleBackColor = true;
@@ -148,7 +150,7 @@
             // 
             this.F_Setup.Location = new System.Drawing.Point(735, 13);
             this.F_Setup.Name = "F_Setup";
-            this.F_Setup.Size = new System.Drawing.Size(121, 68);
+            this.F_Setup.Size = new System.Drawing.Size(86, 68);
             this.F_Setup.TabIndex = 10;
             this.F_Setup.Text = "设置";
             this.F_Setup.UseVisualStyleBackColor = true;
@@ -235,9 +237,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1182, 96);
+            this.button1.Location = new System.Drawing.Point(1102, 261);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(84, 50);
+            this.button1.Size = new System.Drawing.Size(84, 35);
             this.button1.TabIndex = 20;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
@@ -246,9 +248,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1182, 173);
+            this.button2.Location = new System.Drawing.Point(1102, 323);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(84, 40);
+            this.button2.Size = new System.Drawing.Size(84, 35);
             this.button2.TabIndex = 21;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
@@ -274,7 +276,7 @@
             // 
             // F_delete_name
             // 
-            this.F_delete_name.Location = new System.Drawing.Point(129, 101);
+            this.F_delete_name.Location = new System.Drawing.Point(23, 150);
             this.F_delete_name.Name = "F_delete_name";
             this.F_delete_name.Size = new System.Drawing.Size(100, 44);
             this.F_delete_name.TabIndex = 22;
@@ -309,13 +311,14 @@
             // 
             // panel3
             // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.F_delete_name);
             this.panel3.Controls.Add(this.label9);
             this.panel3.Controls.Add(this.F_insert_name);
             this.panel3.Controls.Add(this.F_Botname);
-            this.panel3.Location = new System.Drawing.Point(875, 13);
+            this.panel3.Location = new System.Drawing.Point(839, 13);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(246, 205);
+            this.panel3.Size = new System.Drawing.Size(189, 205);
             this.panel3.TabIndex = 25;
             // 
             // F_mm_cansee
@@ -329,11 +332,32 @@
             this.F_mm_cansee.UseVisualStyleBackColor = true;
             this.F_mm_cansee.CheckedChanged += new System.EventHandler(this.F_mm_cansee_CheckedChanged);
             // 
+            // F_tell_cmd
+            // 
+            this.F_tell_cmd.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.F_tell_cmd.Location = new System.Drawing.Point(1047, 12);
+            this.F_tell_cmd.Multiline = true;
+            this.F_tell_cmd.Name = "F_tell_cmd";
+            this.F_tell_cmd.Size = new System.Drawing.Size(219, 146);
+            this.F_tell_cmd.TabIndex = 26;
+            // 
+            // F_write_cmd
+            // 
+            this.F_write_cmd.Location = new System.Drawing.Point(1102, 175);
+            this.F_write_cmd.Name = "F_write_cmd";
+            this.F_write_cmd.Size = new System.Drawing.Size(106, 43);
+            this.F_write_cmd.TabIndex = 27;
+            this.F_write_cmd.Text = "输入";
+            this.F_write_cmd.UseVisualStyleBackColor = true;
+            this.F_write_cmd.Click += new System.EventHandler(this.F_write_cmd_Click);
+            // 
             // QQbot_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1278, 774);
+            this.Controls.Add(this.F_write_cmd);
+            this.Controls.Add(this.F_tell_cmd);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.button2);
@@ -389,6 +413,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.CheckBox F_mm_cansee;
+        private System.Windows.Forms.TextBox F_tell_cmd;
+        private System.Windows.Forms.Button F_write_cmd;
     }
 }
 

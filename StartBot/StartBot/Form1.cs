@@ -17,7 +17,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
-
+using System.Reflection;
 
 namespace StartBot
 {
@@ -28,6 +28,10 @@ namespace StartBot
             InitializeComponent();
         }
 
+        Process proc = new System.Diagnostics.Process();
+
+        string local_path;
+
         /// <summary>
         /// 启动QQ机器人      
         /// </summary>
@@ -37,31 +41,43 @@ namespace StartBot
         {
             try
             {
-                using (Process proc = new System.Diagnostics.Process())
+                //using (Process proc = new System.Diagnostics.Process())
+                //{
+                
+                Process[] processes = Process.GetProcessesByName("cmd");
+                if (processes.Length == 0)
                 {
-
-                    string local = string.Format(@"D:\1TOOL\QQbot\AngelinaBot-Windows10\AngelinaBot-Windows10");
-                    //Process proc = new Process();
-                    proc.StartInfo.WorkingDirectory = local;
-                    proc.StartInfo.FileName = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\start.bat";
-                    //proc.StartInfo.Arguments = string.Format("10");//this is argument
-                    proc.StartInfo.CreateNoWindow = true;
-
-                    proc.StartInfo.StandardOutputEncoding = Encoding.UTF8;//cmd输出流文本格式
-                    proc.StartInfo.UseShellExecute = false;
-                    proc.StartInfo.RedirectStandardOutput = true;//打开流输出
-                    proc.StartInfo.RedirectStandardInput = true;//打开流输入
-                    proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;//这里设置DOS窗口不显示，经实践可行
-
-                    proc.Start();
-
-                    // 异步获取命令行内容  
-                    proc.BeginOutputReadLine();
-                    //proc.StandardInput.WriteLine("test");
-                    // 为异步获取订阅事件  
-                    proc.OutputDataReceived += new DataReceivedEventHandler(process_OutputDataReceived);
-                    //proc.WaitForExit();
                 }
+                else
+                {
+                    MessageBox.Show("程序已在执行");
+                    return;
+                }
+
+
+                string local = local_path;
+                //string local = string.Format(@"D:\1TOOL\QQbot\AngelinaBot-Windows10\AngelinaBot-Windows10");
+                //Process proc = new Process();
+                proc.StartInfo.WorkingDirectory = local;
+                proc.StartInfo.FileName = local_path+ "\\start.bat";
+                //proc.StartInfo.Arguments = string.Format("10");//this is argument
+                proc.StartInfo.CreateNoWindow = true;
+
+                proc.StartInfo.StandardOutputEncoding = Encoding.UTF8;//cmd输出流文本格式
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardOutput = true;//打开流输出
+                proc.StartInfo.RedirectStandardInput = true;//打开流输入
+                proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;//这里设置DOS窗口不显示，经实践可行
+
+                proc.Start();
+
+                // 异步获取命令行内容  
+                proc.BeginOutputReadLine();
+                //proc.StandardInput.WriteLine("test");
+                // 为异步获取订阅事件  
+                proc.OutputDataReceived += new DataReceivedEventHandler(process_OutputDataReceived);
+                //proc.WaitForExit();
+                //}
             }
             catch (Exception ex)
             {
@@ -71,24 +87,15 @@ namespace StartBot
         }
 
         /// <summary>
-        /// 指令发送函数
-        /// </summary>
-        /// <param name="tclCommand"></param>
-        private void ExecuteTclCommand(string tclCommand)
-        {
-            //proc.StandardInput.WriteLine(tclCommand);
-            //proc.StandardInput.AutoFlush = true;
-        }
-
-
-
-        /// <summary>
         /// 打开界面初始化参数
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
+            local_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            //local_path = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10";
+
             string[] type = { "IPAD", "ANDROID_PAD", "ANDROID_PHONE", "MACOS" };
             F_typeList.Items.AddRange(type);
             F_typeList.SelectedIndex = 0;
@@ -103,7 +110,7 @@ namespace StartBot
         /// <param name="e"></param>
         private void F_Setup_Click(object sender, EventArgs e)
         {
-            String filePath = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\application.yml";
+            String filePath = local_path+ "\\application.yml";
             Ymlhelper yml = new Ymlhelper(filePath);
             yml.modify("administrators", F_administrators.Text);
             yml.modify("qqList", F_qqList.Text);
@@ -122,7 +129,9 @@ namespace StartBot
         /// </summary>
         private void Updateyml()
         {
-            String filePath = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\application.yml";
+            //String filePath = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\application.yml";
+
+            String filePath = local_path + "\\application.yml";
             //String filePath = Directory.GetCurrentDirectory() + @"\application.yml";
             Ymlhelper yml = new Ymlhelper(filePath);
             F_administrators.Text = yml.read("administrators");
@@ -140,7 +149,7 @@ namespace StartBot
 
         private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            // 这里仅做输出的示例，实际上可以根据情况取消获取命令行的内容  
+            //可以根据情况取消获取命令行的内容  
 
             if (String.IsNullOrEmpty(e.Data) == false)
                 this.AppendText(e.Data + "\r\n");
@@ -164,9 +173,8 @@ namespace StartBot
         }
         #endregion
 
-
         /// <summary>
-        /// 程序退出后关闭Jav进程
+        /// 程序退出后关闭Java进程
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -277,7 +285,6 @@ namespace StartBot
             }
             else
             {
-                //F_Botname.Items.Remove(F_Botname.SelectedIndex);
                 String filePath = "D:\\1TOOL\\QQbot\\AngelinaBot-Windows10\\AngelinaBot-Windows10\\application.yml";
                 Ymlhelper yml = new Ymlhelper(filePath);
                 string name = "";
@@ -333,13 +340,33 @@ namespace StartBot
         private void F_mm_cansee_CheckedChanged(object sender, EventArgs e)
         {
             if (F_mm_cansee.Checked)
-            {
                 F_pwList.PasswordChar = '\0';   //显示输入
-            }
+            else
+                F_pwList.PasswordChar = '*';   //显示*
+        }
+
+        /// <summary>
+        /// cmd窗口输入
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void F_write_cmd_Click(object sender, EventArgs e)
+        {
+            if (F_tell_cmd.Text == "")
+                return;
             else
             {
-                F_pwList.PasswordChar = '*';   //显示*
+                ExecuteTclCommand(F_tell_cmd.Text);
             }
+        }
+        /// <summary>
+        /// 指令发送函数
+        /// </summary>
+        /// <param name="tclCommand"></param>
+        private void ExecuteTclCommand(string tclCommand)
+        {
+            proc.StandardInput.WriteLine(tclCommand);
+            proc.StandardInput.AutoFlush = true;
         }
     }
 }
